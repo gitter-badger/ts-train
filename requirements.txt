@@ -11,6 +11,8 @@ dtw
 fastdtw
 
 matplotlib
+seaborn
+# plotly
 
 typing
 requests
