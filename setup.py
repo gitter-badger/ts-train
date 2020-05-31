@@ -47,3 +47,5 @@ setup(
     install_requires=requires,
     dependency_links=links
 )
+
+#https://packaging.python.org/tutorials/packaging-projects/#classifiers
