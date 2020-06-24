@@ -151,15 +151,89 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-ts_train.data">
-<span id="modules"></span><h1>Modules<a class="headerlink" href="#module-ts_train.data" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="data-transformation-ts-train-data">
+  <div class="section" id="modules">
+<h1>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h1>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#module-ts_train.data" title="ts_train.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ts_train.data</span></code></a></p></td>
+<td><p>Data transformation (<a class="reference internal" href="#module-ts_train.data" title="ts_train.data"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ts_train.data</span></code></a>)</p></td>
+</tr>
+</tbody>
+</table>
+<span class="target" id="module-ts_train.data"></span><div class="section" id="data-transformation-ts-train-data">
 <h2>Data transformation (<a class="reference internal" href="#module-ts_train.data" title="ts_train.data"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ts_train.data</span></code></a>)<a class="headerlink" href="#data-transformation-ts-train-data" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ts_train.data.clean_time_series" title="ts_train.data.clean_time_series"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clean_time_series</span></code></a>(inSeries)</p></td>
+<td><p>Remove duplicated based on timestamp index and perform linear interpolation for missing timestamp index</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ts_train.data.interpolate_series" title="ts_train.data.interpolate_series"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolate_series</span></code></a>(time_series, n_points)</p></td>
+<td><p>Upsame &amp; Interpolate the pattern to <cite>n_points</cite> number of values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ts_train.data.series2matrix" title="ts_train.data.series2matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">series2matrix</span></code></a>(in_series[, w, padding])</p></td>
+<td><p>Generate matrix with rolling window from 1D iterator.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt id="ts_train.data.clean_time_series">
+<code class="sig-prename descclassname">ts_train.data.</code><code class="sig-name descname">clean_time_series</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inSeries</span><span class="p">:</span> <span class="n">pandas.core.series.Series</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.series.Series<a class="reference internal" href="_modules/ts_train/data.html#clean_time_series"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ts_train.data.clean_time_series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove duplicated based on timestamp index and
+perform linear interpolation for missing timestamp index</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>inSeries: pd.Series</dt><dd><p>The time series to be clean from duplicates and fill missing
+by interpolation</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>return: pd.Series</dt><dd><p>Returns clean series</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ts_train.data.interpolate_series">
+<code class="sig-prename descclassname">ts_train.data.</code><code class="sig-name descname">interpolate_series</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">time_series</span><span class="p">:</span> <span class="n">pandas.core.series.Series</span></em>, <em class="sig-param"><span class="n">n_points</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.series.Series<a class="reference internal" href="_modules/ts_train/data.html#interpolate_series"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ts_train.data.interpolate_series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upsame &amp; Interpolate the pattern to <cite>n_points</cite> number of values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>time_series: pd.Series</dt><dd><p>Time series data to model &amp; interpolated  to n_points.</p>
+</dd>
+<dt>n_points: int</dt><dd><p>Number of points to interpolate for.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>return: pd.Series</dt><dd><p>Series with index <cite>n_points</cite> and the interpolated values.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py function">
 <dt id="ts_train.data.series2matrix">
-<code class="sig-prename descclassname">ts_train.data.</code><code class="sig-name descname">series2matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_series</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>pandas.core.series.Series<span class="p">, </span>numpy.ndarray<span class="p">, </span>list<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">w</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">50</span></em>, <em class="sig-param"><span class="n">padding</span><span class="o">=</span><span class="default_value">'valid'</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/ts_train/data.html#series2matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ts_train.data.series2matrix" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">ts_train.data.</code><code class="sig-name descname">series2matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_series</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>pandas.core.series.Series<span class="p">, </span>numpy.ndarray<span class="p">, </span>list<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">w</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">50</span></em>, <em class="sig-param"><span class="n">padding</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'valid'</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/ts_train/data.html#series2matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ts_train.data.series2matrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate matrix with rolling window from 1D iterator.</p>
-<dl class="simple">
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
 <dt>in_series: pd.Series, np.array or list</dt><dd><p>1D iterator</p>
 </dd>
 <dt>w: int</dt><dd><p>rolling window size</p>
@@ -167,11 +241,15 @@
 <dt>padding: str</dt><dd><p>[“valid”, “same”]</p>
 </dd>
 </dl>
-<dl class="simple">
-<dt>df: pd.DataFrame</dt><dd><p>DataFrame of rows as moving windows</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>return: pd.DataFrame</dt><dd><p>DataFrame of rows as moving windows</p>
 </dd>
 </dl>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</dd>
+<dt class="field-odd">Examples</dt>
+<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ls</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10_000</span><span class="p">)]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sr</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">ls</span><span class="p">)</span> <span class="c1"># sr = np.array(ls) # sr = ls</span>
@@ -179,6 +257,8 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">7475</span><span class="p">,</span> <span class="mi">2526</span><span class="p">)</span>
 </pre></div>
 </div>
+</dd>
+</dl>
 </dd></dl>
 
 </div>

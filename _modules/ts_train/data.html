@@ -152,48 +152,115 @@
 
 <span class="sd">.. currentmodule:: ts_train.data</span>
 
-<span class="sd">.. automodule:: data</span>
+<span class="sd">.. autosummary::</span>
+<span class="sd">   clean_time_series</span>
+<span class="sd">   interpolate_series</span>
+<span class="sd">   series2matrix</span>
+<span class="sd">   </span>
+<span class="sd">.. autofunction:: clean_time_series</span>
+<span class="sd">.. autofunction:: interpolate_series</span>
 <span class="sd">.. autofunction:: series2matrix</span>
 
+<span class="sd">     </span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
 
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">CubicSpline</span>
+
 
 <span class="n">__docformat__</span> <span class="o">=</span> <span class="s1">&#39;restructuredtext&#39;</span>
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;series2matrix&#39;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="series2matrix"><a class="viewcode-back" href="../../modules.html#ts_train.data.series2matrix">[docs]</a><span class="k">def</span> <span class="nf">series2matrix</span><span class="p">(</span><span class="n">in_series</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span> <span class="n">w</span><span class="p">:</span><span class="nb">int</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s2">&quot;valid&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<div class="viewcode-block" id="clean_time_series"><a class="viewcode-back" href="../../modules.html#ts_train.data.clean_time_series">[docs]</a><span class="k">def</span> <span class="nf">clean_time_series</span><span class="p">(</span><span class="n">inSeries</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Remove duplicated based on timestamp index and</span>
+<span class="sd">    perform linear interpolation for missing timestamp index</span>
+
+<span class="sd">    :Parameters:</span>
+<span class="sd">    </span>
+<span class="sd">        inSeries: pd.Series</span>
+<span class="sd">            The time series to be clean from duplicates and fill missing</span>
+<span class="sd">            by interpolation</span>
+<span class="sd">        </span>
+<span class="sd">    :Returns:</span>
+<span class="sd">        </span>
+<span class="sd">        return: pd.Series</span>
+<span class="sd">            Returns clean series</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">inSeries</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">inSeries</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+
+    <span class="n">mask_duplicated</span> <span class="o">=</span> <span class="n">inSeries</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">duplicated</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Duplicated data points found:&quot;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">mask_duplicated</span><span class="p">))</span>
+    <span class="n">inSeries</span> <span class="o">=</span> <span class="n">inSeries</span><span class="p">[</span><span class="o">~</span><span class="n">mask_duplicated</span><span class="p">]</span>
+
+    <span class="n">new_idx</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">inSeries</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">inSeries</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+    <span class="n">outSeries</span> <span class="o">=</span> <span class="n">inSeries</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">new_idx</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Missing data points found:&quot;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">outSeries</span><span class="o">.</span><span class="n">isna</span><span class="p">()))</span>
+    <span class="n">outSeries</span> <span class="o">=</span> <span class="n">outSeries</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">outSeries</span></div>
+
+
+<div class="viewcode-block" id="interpolate_series"><a class="viewcode-back" href="../../modules.html#ts_train.data.interpolate_series">[docs]</a><span class="k">def</span> <span class="nf">interpolate_series</span><span class="p">(</span><span class="n">time_series</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">n_points</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Upsame &amp; Interpolate the pattern to `n_points` number of values.</span>
+
+<span class="sd">    :Parameters:</span>
+
+<span class="sd">        time_series: pd.Series</span>
+<span class="sd">            Time series data to model &amp; interpolated  to n_points.</span>
+
+<span class="sd">        n_points: int</span>
+<span class="sd">            Number of points to interpolate for.</span>
+
+<span class="sd">    :Returns:</span>
+<span class="sd">        </span>
+<span class="sd">        return: pd.Series</span>
+<span class="sd">            Series with index `n_points` and the interpolated values.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">spline</span> <span class="o">=</span> <span class="n">CubicSpline</span><span class="p">(</span><span class="n">time_series</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">time_series</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+    <span class="n">interpolation_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">time_series</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">n_points</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">spline</span><span class="p">(</span><span class="n">interpolation_points</span><span class="p">),</span>
+        <span class="n">index</span><span class="o">=</span><span class="n">interpolation_points</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="series2matrix"><a class="viewcode-back" href="../../modules.html#ts_train.data.series2matrix">[docs]</a><span class="k">def</span> <span class="nf">series2matrix</span><span class="p">(</span><span class="n">in_series</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span> <span class="n">w</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">padding</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;valid&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate matrix with rolling window from 1D iterator.</span>
-<span class="sd">    </span>
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    in_series: pd.Series, np.array or list</span>
-<span class="sd">        1D iterator</span>
 
-<span class="sd">    w: int</span>
-<span class="sd">        rolling window size</span>
+<span class="sd">    :Parameters:</span>
 <span class="sd">        </span>
-<span class="sd">    padding: str</span>
-<span class="sd">        [&quot;valid&quot;, &quot;same&quot;]</span>
+<span class="sd">        in_series: pd.Series, np.array or list</span>
+<span class="sd">            1D iterator</span>
 
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    df: pd.DataFrame</span>
-<span class="sd">        DataFrame of rows as moving windows</span>
+<span class="sd">        w: int</span>
+<span class="sd">            rolling window size</span>
 
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">    &gt;&gt;&gt; import pandas as pd</span>
-<span class="sd">    &gt;&gt;&gt; ls = [np.random.random() for i in range(10_000)]</span>
-<span class="sd">    &gt;&gt;&gt; sr = pd.Series(ls) # sr = np.array(ls) # sr = ls</span>
-<span class="sd">    &gt;&gt;&gt; data_df = series2matrix(sr, w=2526)</span>
-<span class="sd">    &gt;&gt;&gt; assert data.shape == (7475, 2526)</span>
+<span class="sd">        padding: str</span>
+<span class="sd">            [&quot;valid&quot;, &quot;same&quot;]</span>
+
+<span class="sd">    :Returns:</span>
+<span class="sd">        </span>
+<span class="sd">        return: pd.DataFrame</span>
+<span class="sd">            DataFrame of rows as moving windows</span>
+
+<span class="sd">    :Examples:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; import pandas as pd</span>
+<span class="sd">        &gt;&gt;&gt; ls = [np.random.random() for i in range(10_000)]</span>
+<span class="sd">        &gt;&gt;&gt; sr = pd.Series(ls) # sr = np.array(ls) # sr = ls</span>
+<span class="sd">        &gt;&gt;&gt; data_df = series2matrix(sr, w=2526)</span>
+<span class="sd">        &gt;&gt;&gt; assert data.shape == (7475, 2526)</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">in_series</span> <span class="o">=</span> <span class="n">in_series</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -207,6 +274,8 @@
         <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     
     <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span></div>
+
+
 </pre></div>
 
            </div>
