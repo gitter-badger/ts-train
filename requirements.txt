@@ -16,7 +16,7 @@ seaborn
 
 typing
 requests
-copy
+# copy
 json
 collections
 

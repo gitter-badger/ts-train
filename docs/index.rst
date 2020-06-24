@@ -6,12 +6,15 @@
 Welcome to ts_train's documentation!
 ========================================
 
+:Date: |today|
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
    
    usage/installation
    usage/quickstart
+   modules
 
 
 
