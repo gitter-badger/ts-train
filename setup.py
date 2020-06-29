@@ -25,7 +25,7 @@ requires = parse_requirements('requirements.txt')
 setup(
     name='ts_train',
     version="0.1",
-    url='git@github.com:minesh1291/ts-train.git',
+    url='https://minesh1291.github.io/ts-train',
     license='MIT License',
     author="Minesh A. Jethva",
     author_email="minesh.1291@gmail.com",
