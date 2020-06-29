@@ -9,20 +9,23 @@ tsfresh
 
 dtw
 fastdtw
+dtaidistance
+
+kneed
 
 matplotlib
 seaborn
 # plotly
 
-typing
-requests
-# copy
-json
-collections
-
 tqdm
-multiprocessing
-time
-datetime
 arrow
 
+# multiprocessing
+# time
+# datetime
+
+# typing
+# requests
+# copy
+# json
+# collections
