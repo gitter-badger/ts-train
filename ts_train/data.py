@@ -20,7 +20,7 @@ from typing import Union, List
 
 import pandas as pd
 import numpy as np
-from scipy.interpolate import CubicSpline
+from scipy.interpolate import CubicSpline, interp1d
 
 
 __docformat__ = 'restructuredtext'
@@ -57,7 +57,7 @@ def clean_time_series(inSeries: pd.Series) -> pd.Series:
     return outSeries
 
 
-def interpolate_series(time_series: pd.Series, n_points: int) -> pd.Series:
+def interpolate_series(time_series: pd.Series, n_points: int, method: str="spline") -> pd.Series:
     """
     Up-sample & Interpolate the pattern to `n_points` number of values.
 
@@ -75,8 +75,12 @@ def interpolate_series(time_series: pd.Series, n_points: int) -> pd.Series:
             Series with index `n_points` and the interpolated values.
     
     """
-    spline = CubicSpline(time_series.index, time_series.values)
-
+    
+    if method=="spline":
+        spline = CubicSpline(time_series.index, time_series.values)
+    else:
+        spline = interp1d(time_series.index, time_series.values, kind="nearest")
+    
     interpolation_points = np.linspace(0, time_series.index.max(), n_points).round(5)
 
     return pd.Series(
