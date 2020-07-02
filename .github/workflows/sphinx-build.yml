@@ -12,7 +12,7 @@ jobs:
       with:
         docs-folder: "docs/"
         pre-build-command: "pip install -U recommonmark sphinx_rtd_theme"
-        build-command: "mkdir _build && sphinx-build -b html . _build"
+        build-command: "sphinx-build -b html . _build"
     - run: "ls -Rp _build"
     - name: Commit documentation changes
       run: |
