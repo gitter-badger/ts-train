@@ -1,4 +1,15 @@
-- name: Sphinx Build
+name: "Pull Request Docs Check"
+on: 
+- pull_request
 
-  uses: ammaraskar/sphinx-action@0.4
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: ammaraskar/sphinx-action@master
+      with:
+        docs-folder: "docs/"
+        build-command: "sphinx-build -b html . _build"
+
 
