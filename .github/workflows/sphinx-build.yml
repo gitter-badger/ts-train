@@ -17,6 +17,7 @@ jobs:
     - name: Commit documentation changes
       run: |
         git clone https://github.com/minesh1291/ts-train.git --branch gh-pages --single-branch gh-pages
+        ls -Rp . && pwd
         cp -r docs/_build/html/* gh-pages/
         cd gh-pages
         git config --local user.email "action@github.com"
@@ -30,6 +31,6 @@ jobs:
       with:
         branch: gh-pages
         directory: gh-pages
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.GH_TOKEN }}
         
         
