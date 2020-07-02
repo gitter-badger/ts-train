@@ -29,3 +29,6 @@ arrow
 # copy
 # json
 # collections
+
+recommonmark
+sphinx_rtd_theme
