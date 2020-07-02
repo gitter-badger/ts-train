@@ -17,8 +17,7 @@ jobs:
     - name: Commit documentation changes
       run: |
         git clone https://github.com/minesh1291/ts-train.git --branch gh-pages --single-branch gh-pages
-        ls -Rp . && pwd
-        cp -r docs/_build/html/* gh-pages/
+        cp -r docs/_build/* gh-pages/
         cd gh-pages
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
