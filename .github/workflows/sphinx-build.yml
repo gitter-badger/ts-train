@@ -13,6 +13,7 @@ jobs:
         docs-folder: "docs/"
         pre-build-command: "pip install -U recommonmark sphinx_rtd_theme"
         build-command: "mkdir _build && sphinx-build -b html . _build"
+    - run: "ls -Rp _build"
     - name: Commit documentation changes
       run: |
         git clone https://github.com/minesh1291/ts-train.git --branch gh-pages --single-branch gh-pages
@@ -24,7 +25,6 @@ jobs:
         git commit -m "Update documentation" -a || true
         # The above command will fail if no changes were present, so we ignore
         # the return code.
-    - run: "ls -Rp _build"
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
