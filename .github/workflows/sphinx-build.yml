@@ -13,7 +13,7 @@ jobs:
         docs-folder: "docs/"
         pre-build-command: "pip install -U recommonmark sphinx_rtd_theme"
         build-command: "sphinx-build -b html . _build"
-    - run: "ls -Rp _build"
+    - run: "ls -Rp . && pwd"
     - name: Commit documentation changes
       run: |
         git clone https://github.com/minesh1291/ts-train.git --branch gh-pages --single-branch gh-pages
