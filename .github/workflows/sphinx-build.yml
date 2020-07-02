@@ -11,7 +11,7 @@ jobs:
     - uses: ammaraskar/sphinx-action@master
       with:
         docs-folder: "docs/"
-        pre-build-command: "pip install -r ../requirements.txt"
+        pre-build-command: "pip install -U -r ./requirements.txt"
         build-command: "sphinx-build -b html . _build"
     - run: "ls -Rp . && pwd"
     - name: Commit documentation changes
