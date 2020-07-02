@@ -1,6 +1,6 @@
 """
 Data transformation for deep learning (:mod:`ts_train.deepdata`)
-==========================================
+================================================================
 
 .. currentmodule:: ts_train.deepdata
 
@@ -8,8 +8,6 @@ Data transformation for deep learning (:mod:`ts_train.deepdata`)
    dataframe_to_dataset
    
 .. autofunction:: dataframe_to_dataset
-
-     
 
 """
 import pandas as pd
