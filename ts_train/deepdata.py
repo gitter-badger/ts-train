@@ -34,17 +34,16 @@ def dataframe_to_dataset(df: pd.DataFrame, features: list, target: str):
             Returns dataset compatible for deeplearning tasks
     
     :Example:
-        >>> training_df: pd.DataFrame = pd.DataFrame(
+        >>> training_df = pd.DataFrame(
                data={
                     'feature1': np.random.rand(10),
                     'feature2': np.random.rand(10),
                     'feature3': np.random.rand(10),
                     'target': np.random.randint(0, 3, 10)
                 }
-            )
+             )
         >>> features = ['feature1', 'feature2', 'feature3']
         >>> training_dataset = dataframe_to_dataset(training_df, features, 'target')
-
         >>> for features_tensor, target_tensor in training_dataset:
                 print(f'features:{features_tensor} target:{target_tensor}')
                 
