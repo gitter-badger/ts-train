@@ -87,6 +87,7 @@
 <li class="toctree-l1"><a class="reference internal" href="usage/quickstart.html">Quickstart</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Modules</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#data-transformation-ts-train-data">Data transformation (<code class="xref py py-mod docutils literal notranslate"><span class="pre">ts_train.data</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-transformation-for-deep-learning-ts-train-deepdata">Data transformation for deep learning (<code class="xref py py-mod docutils literal notranslate"><span class="pre">ts_train.deepdata</span></code>)</a></li>
 </ul>
 </li>
 </ul>
@@ -164,6 +165,9 @@
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#module-ts_train.data" title="ts_train.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ts_train.data</span></code></a></p></td>
 <td><p>Data transformation (<a class="reference internal" href="#module-ts_train.data" title="ts_train.data"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ts_train.data</span></code></a>)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#module-ts_train.deepdata" title="ts_train.deepdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ts_train.deepdata</span></code></a></p></td>
+<td><p>Data transformation for deep learning (<a class="reference internal" href="#module-ts_train.deepdata" title="ts_train.deepdata"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ts_train.deepdata</span></code></a>)</p></td>
 </tr>
 </tbody>
 </table>
@@ -260,6 +264,41 @@ by interpolation</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">7475</span><span class="p">,</span> <span class="mi">2526</span><span class="p">)</span>
 </pre></div>
 </div>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<span class="target" id="module-ts_train.deepdata"></span><div class="section" id="data-transformation-for-deep-learning-ts-train-deepdata">
+<h2>Data transformation for deep learning (<a class="reference internal" href="#module-ts_train.deepdata" title="ts_train.deepdata"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ts_train.deepdata</span></code></a>)<a class="headerlink" href="#data-transformation-for-deep-learning-ts-train-deepdata" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ts_train.deepdata.dataframe_to_dataset" title="ts_train.deepdata.dataframe_to_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dataframe_to_dataset</span></code></a>(df, features, target)</p></td>
+<td><p>Transform DataFrame format to Tensorflow Dataset :Parameters:</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt id="ts_train.deepdata.dataframe_to_dataset">
+<code class="sig-prename descclassname">ts_train.deepdata.</code><code class="sig-name descname">dataframe_to_dataset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">features</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">target</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ts_train/deepdata.html#dataframe_to_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ts_train.deepdata.dataframe_to_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform DataFrame format to Tensorflow Dataset
+:Parameters:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>df: pd.DataFrame</dt><dd><p>DataFrame containing multiple columns of features and target</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>dataset: tf.data.Dataset</dt><dd><p>Returns dataset compatible for deeplearning tasks</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
