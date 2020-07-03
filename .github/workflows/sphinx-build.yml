@@ -8,10 +8,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - name: Install Prerequisites
+      run: |
+        sudo apt-get install -y python-dev
     - uses: ammaraskar/sphinx-action@master
       with:
         docs-folder: "docs/"
-        pre-build-command: "sudo apt-get install -y python-dev && pip install -U -r requirements.txt"
+        pre-build-command: "pip install -U -r requirements.txt"
         build-command: "sphinx-build -b html . _build"
     - run: "ls -Rp . && pwd"
     - name: Commit documentation changes
