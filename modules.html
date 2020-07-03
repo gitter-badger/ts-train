@@ -304,19 +304,17 @@ by interpolation</p>
 </dl>
 </dd>
 <dt class="field-odd">Example</dt>
-<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">training_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">training_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
 <span class="go">       data={</span>
 <span class="go">            &#39;feature1&#39;: np.random.rand(10),</span>
 <span class="go">            &#39;feature2&#39;: np.random.rand(10),</span>
 <span class="go">            &#39;feature3&#39;: np.random.rand(10),</span>
 <span class="go">            &#39;target&#39;: np.random.randint(0, 3, 10)</span>
 <span class="go">        }</span>
-<span class="go">    )</span>
+<span class="go">     )</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;feature1&#39;</span><span class="p">,</span> <span class="s1">&#39;feature2&#39;</span><span class="p">,</span> <span class="s1">&#39;feature3&#39;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">training_dataset</span> <span class="o">=</span> <span class="n">dataframe_to_dataset</span><span class="p">(</span><span class="n">training_df</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">features_tensor</span><span class="p">,</span> <span class="n">target_tensor</span> <span class="ow">in</span> <span class="n">training_dataset</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">features_tensor</span><span class="p">,</span> <span class="n">target_tensor</span> <span class="ow">in</span> <span class="n">training_dataset</span><span class="p">:</span>
 <span class="go">        print(f&#39;features:{features_tensor} target:{target_tensor}&#39;)</span>
 </pre></div>
 </div>

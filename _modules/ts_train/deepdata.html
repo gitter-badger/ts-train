@@ -185,17 +185,16 @@
 <span class="sd">            Returns dataset compatible for deeplearning tasks</span>
 <span class="sd">    </span>
 <span class="sd">    :Example:</span>
-<span class="sd">        &gt;&gt;&gt; training_df: pd.DataFrame = pd.DataFrame(</span>
+<span class="sd">        &gt;&gt;&gt; training_df = pd.DataFrame(</span>
 <span class="sd">               data={</span>
 <span class="sd">                    &#39;feature1&#39;: np.random.rand(10),</span>
 <span class="sd">                    &#39;feature2&#39;: np.random.rand(10),</span>
 <span class="sd">                    &#39;feature3&#39;: np.random.rand(10),</span>
 <span class="sd">                    &#39;target&#39;: np.random.randint(0, 3, 10)</span>
 <span class="sd">                }</span>
-<span class="sd">            )</span>
+<span class="sd">             )</span>
 <span class="sd">        &gt;&gt;&gt; features = [&#39;feature1&#39;, &#39;feature2&#39;, &#39;feature3&#39;]</span>
 <span class="sd">        &gt;&gt;&gt; training_dataset = dataframe_to_dataset(training_df, features, &#39;target&#39;)</span>
-
 <span class="sd">        &gt;&gt;&gt; for features_tensor, target_tensor in training_dataset:</span>
 <span class="sd">                print(f&#39;features:{features_tensor} target:{target_tensor}&#39;)</span>
 <span class="sd">                </span>
