@@ -2,5 +2,7 @@ recommonmark
 sphinx_rtd_theme
 sphinx==3.1.0
 
+
 pandas
 scipy
+tensorflow==2.2.0
