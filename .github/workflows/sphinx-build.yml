@@ -19,8 +19,7 @@ jobs:
     - uses: ammaraskar/sphinx-action@master
       with:
         docs-folder: "docs/"
-#         pre-build-command: "pip install -U -r requirements.txt"
-        pre-build-command: "pip install -U recommonmark sphinx_rtd_theme 'sphinx==3.1.0'"
+        pre-build-command: "pip install -U -r docs/requirements.txt"
         build-command: "sphinx-build -b html . _build"
     - run: "ls -Rp . && pwd"
     - name: Commit documentation changes
