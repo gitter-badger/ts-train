@@ -1,2 +1,6 @@
+recommonmark
+sphinx_rtd_theme
+sphinx==3.1.0
+
 pandas
 scipy
