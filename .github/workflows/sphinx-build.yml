@@ -8,18 +8,19 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v1
-    - name: Install Prerequisites
-      run: |
-        sudo apt-get update
-        sudo apt-get upgrade
-        sudo apt-get install gcc --only-upgrade
-        sudo apt-get install -y python-dev python3-dev python3-pip
-        pip install "psutil==5.7.0"
-        pip3 install "psutil==5.7.0"
+#     - name: Install Prerequisites
+#       run: |
+#         sudo apt-get update
+#         sudo apt-get upgrade
+#         sudo apt-get install gcc --only-upgrade
+#         sudo apt-get install -y python-dev python3-dev python3-pip
+#         pip install "psutil==5.7.0"
+#         pip3 install "psutil==5.7.0"
     - uses: ammaraskar/sphinx-action@master
       with:
         docs-folder: "docs/"
-        pre-build-command: "pip install -U -r requirements.txt"
+#         pre-build-command: "pip install -U -r requirements.txt"
+        pre-build-command: "pip install -U recommonmark sphinx_rtd_theme"
         build-command: "sphinx-build -b html . _build"
     - run: "ls -Rp . && pwd"
     - name: Commit documentation changes
