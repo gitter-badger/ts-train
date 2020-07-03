@@ -20,7 +20,7 @@ jobs:
       with:
         docs-folder: "docs/"
 #         pre-build-command: "pip install -U -r requirements.txt"
-        pre-build-command: "pip install -U recommonmark sphinx_rtd_theme"
+        pre-build-command: "pip install -U recommonmark sphinx_rtd_theme 'sphinx==3.1.0'"
         build-command: "sphinx-build -b html . _build"
     - run: "ls -Rp . && pwd"
     - name: Commit documentation changes
