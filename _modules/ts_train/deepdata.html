@@ -166,16 +166,39 @@
 
 <div class="viewcode-block" id="dataframe_to_dataset"><a class="viewcode-back" href="../../modules.html#ts_train.deepdata.dataframe_to_dataset">[docs]</a><span class="k">def</span> <span class="nf">dataframe_to_dataset</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Transform DataFrame format to Tensorflow Dataset</span>
+<span class="sd">    Transform DataFrame format to Tensorflow Dataset.</span>
+<span class="sd">    </span>
 <span class="sd">    :Parameters:</span>
 <span class="sd">    </span>
 <span class="sd">        df: pd.DataFrame</span>
 <span class="sd">            DataFrame containing multiple columns of features and target</span>
 <span class="sd">        </span>
+<span class="sd">        features: list</span>
+<span class="sd">            List of columns containing feature data</span>
+<span class="sd">        </span>
+<span class="sd">        target: str</span>
+<span class="sd">            Name of target column</span>
+<span class="sd">        </span>
 <span class="sd">    :Returns:</span>
 <span class="sd">        </span>
 <span class="sd">        dataset: tf.data.Dataset</span>
 <span class="sd">            Returns dataset compatible for deeplearning tasks</span>
+<span class="sd">    </span>
+<span class="sd">    :Example:</span>
+<span class="sd">        &gt;&gt;&gt; training_df: pd.DataFrame = pd.DataFrame(</span>
+<span class="sd">               data={</span>
+<span class="sd">                    &#39;feature1&#39;: np.random.rand(10),</span>
+<span class="sd">                    &#39;feature2&#39;: np.random.rand(10),</span>
+<span class="sd">                    &#39;feature3&#39;: np.random.rand(10),</span>
+<span class="sd">                    &#39;target&#39;: np.random.randint(0, 3, 10)</span>
+<span class="sd">                }</span>
+<span class="sd">            )</span>
+<span class="sd">        &gt;&gt;&gt; features = [&#39;feature1&#39;, &#39;feature2&#39;, &#39;feature3&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; training_dataset = dataframe_to_dataset(training_df, features, &#39;target&#39;)</span>
+
+<span class="sd">        &gt;&gt;&gt; for features_tensor, target_tensor in training_dataset:</span>
+<span class="sd">                print(f&#39;features:{features_tensor} target:{target_tensor}&#39;)</span>
+<span class="sd">                </span>
 <span class="sd">   &quot;&quot;&quot;</span>
    <span class="n">dataset</span> <span class="o">=</span> <span class="p">(</span>
        <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">(</span>
