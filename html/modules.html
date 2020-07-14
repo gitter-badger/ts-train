@@ -1,7 +1,8 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
@@ -11,18 +12,12 @@
   
 
   
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-
-  
   
   
   
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -34,6 +29,10 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Quickstart" href="usage/quickstart.html" /> 
@@ -50,7 +49,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> ts_train
+            <a href="index.html" class="icon icon-home"> ts_train
           
 
           
@@ -73,7 +72,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -87,7 +85,6 @@
 <li class="toctree-l1"><a class="reference internal" href="usage/quickstart.html">Quickstart</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Modules</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#data-transformation-ts-train-data">Data transformation (<code class="xref py py-mod docutils literal notranslate"><span class="pre">ts_train.data</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#data-transformation-for-deep-learning-ts-train-deepdata">Data transformation for deep learning (<code class="xref py py-mod docutils literal notranslate"><span class="pre">ts_train.deepdata</span></code>)</a></li>
 </ul>
 </li>
 </ul>
@@ -95,7 +92,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -134,7 +130,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="index.html">Docs</a> &raquo;</li>
         
       <li>Modules</li>
     
@@ -166,9 +162,6 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#module-ts_train.data" title="ts_train.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ts_train.data</span></code></a></p></td>
 <td><p>Data transformation (<a class="reference internal" href="#module-ts_train.data" title="ts_train.data"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ts_train.data</span></code></a>)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#module-ts_train.deepdata" title="ts_train.deepdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ts_train.deepdata</span></code></a></p></td>
-<td><p>Data transformation for deep learning (<a class="reference internal" href="#module-ts_train.deepdata" title="ts_train.deepdata"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ts_train.deepdata</span></code></a>)</p></td>
-</tr>
 </tbody>
 </table>
 <span class="target" id="module-ts_train.data"></span><div class="section" id="data-transformation-ts-train-data">
@@ -182,8 +175,8 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ts_train.data.clean_time_series" title="ts_train.data.clean_time_series"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clean_time_series</span></code></a>(inSeries)</p></td>
 <td><p>Remove duplicated based on timestamp index and perform linear interpolation for missing timestamp index</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ts_train.data.interpolate_series" title="ts_train.data.interpolate_series"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolate_series</span></code></a>(time_series, n_points[, …])</p></td>
-<td><p>Up-sample &amp; Interpolate the pattern to <cite>n_points</cite> number of values.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ts_train.data.interpolate_series" title="ts_train.data.interpolate_series"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolate_series</span></code></a>(time_series, n_points)</p></td>
+<td><p>Upsame &amp; Interpolate the pattern to <cite>n_points</cite> number of values.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ts_train.data.series2matrix" title="ts_train.data.series2matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">series2matrix</span></code></a>(in_series[, w, padding])</p></td>
 <td><p>Generate matrix with rolling window from 1D iterator.</p></td>
@@ -214,8 +207,8 @@ by interpolation</p>
 
 <dl class="py function">
 <dt id="ts_train.data.interpolate_series">
-<code class="sig-prename descclassname">ts_train.data.</code><code class="sig-name descname">interpolate_series</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">time_series</span><span class="p">:</span> <span class="n">pandas.core.series.Series</span></em>, <em class="sig-param"><span class="n">n_points</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">method</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'spline'</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.series.Series<a class="reference internal" href="_modules/ts_train/data.html#interpolate_series"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ts_train.data.interpolate_series" title="Permalink to this definition">¶</a></dt>
-<dd><p>Up-sample &amp; Interpolate the pattern to <cite>n_points</cite> number of values.</p>
+<code class="sig-prename descclassname">ts_train.data.</code><code class="sig-name descname">interpolate_series</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">time_series</span><span class="p">:</span> <span class="n">pandas.core.series.Series</span></em>, <em class="sig-param"><span class="n">n_points</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.series.Series<a class="reference internal" href="_modules/ts_train/data.html#interpolate_series"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ts_train.data.interpolate_series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upsame &amp; Interpolate the pattern to <cite>n_points</cite> number of values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
@@ -269,62 +262,6 @@ by interpolation</p>
 </dd></dl>
 
 </div>
-<span class="target" id="module-ts_train.deepdata"></span><div class="section" id="data-transformation-for-deep-learning-ts-train-deepdata">
-<h2>Data transformation for deep learning (<a class="reference internal" href="#module-ts_train.deepdata" title="ts_train.deepdata"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ts_train.deepdata</span></code></a>)<a class="headerlink" href="#data-transformation-for-deep-learning-ts-train-deepdata" title="Permalink to this headline">¶</a></h2>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ts_train.deepdata.dataframe_to_dataset" title="ts_train.deepdata.dataframe_to_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dataframe_to_dataset</span></code></a>(df, features, target)</p></td>
-<td><p>Transform DataFrame format to Tensorflow Dataset.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="py function">
-<dt id="ts_train.deepdata.dataframe_to_dataset">
-<code class="sig-prename descclassname">ts_train.deepdata.</code><code class="sig-name descname">dataframe_to_dataset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">features</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">target</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ts_train/deepdata.html#dataframe_to_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ts_train.deepdata.dataframe_to_dataset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transform DataFrame format to Tensorflow Dataset.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt>df: pd.DataFrame</dt><dd><p>DataFrame containing multiple columns of features and target</p>
-</dd>
-<dt>features: list</dt><dd><p>List of columns containing feature data</p>
-</dd>
-<dt>target: str</dt><dd><p>Name of target column</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><dl class="simple">
-<dt>dataset: tf.data.Dataset</dt><dd><p>Returns dataset compatible for deeplearning tasks</p>
-</dd>
-</dl>
-<dl class="field-list">
-<dt class="field-odd">Example</dt>
-<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">training_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-<span class="go">       data={</span>
-<span class="go">            &#39;feature1&#39;: np.random.rand(10),</span>
-<span class="go">            &#39;feature2&#39;: np.random.rand(10),</span>
-<span class="go">            &#39;feature3&#39;: np.random.rand(10),</span>
-<span class="go">            &#39;target&#39;: np.random.randint(0, 3, 10)</span>
-<span class="go">        }</span>
-<span class="go">     )</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;feature1&#39;</span><span class="p">,</span> <span class="s1">&#39;feature2&#39;</span><span class="p">,</span> <span class="s1">&#39;feature3&#39;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">training_dataset</span> <span class="o">=</span> <span class="n">dataframe_to_dataset</span><span class="p">(</span><span class="n">training_df</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">features_tensor</span><span class="p">,</span> <span class="n">target_tensor</span> <span class="ow">in</span> <span class="n">training_dataset</span><span class="p">:</span>
-<span class="go">        print(f&#39;features:{features_tensor} target:{target_tensor}&#39;)</span>
-</pre></div>
-</div>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-</div>
 </div>
 
 
@@ -345,19 +282,11 @@ by interpolation</p>
 
   <div role="contentinfo">
     <p>
-        
         &copy; Copyright 2020, Minesh A. Jethva
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -368,6 +297,7 @@ by interpolation</p>
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

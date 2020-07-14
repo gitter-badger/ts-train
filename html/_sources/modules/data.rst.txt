@@ -1,0 +1,4 @@
+Data Module
+===========
+
+.. automodule:: ts_train.data
