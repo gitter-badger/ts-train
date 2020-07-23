@@ -84,7 +84,11 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#using-pip-recommended">Using pip (recommended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#from-source-using-git">From source using git</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
 </ul>
@@ -154,7 +158,34 @@
             
   <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>Hi I am installation</p>
+<div class="section" id="using-pip-recommended">
+<h2>Using pip (recommended)<a class="headerlink" href="#using-pip-recommended" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Just in case: in a terminal, check the <strong>consistency</strong> of the outputs of the commands <code class="docutils literal notranslate"><span class="pre">which</span> <span class="pre">python</span></code>, <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">--version</span></code>, <code class="docutils literal notranslate"><span class="pre">which</span> <span class="pre">pip</span></code> and <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">--version</span></code>.</p></li>
+<li><p>In a terminal</p></li>
+</ol>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install ts-train
+
+<span class="c1"># alternative</span>
+pip install git+https://github.com/minesh1291/ts-train.git
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="from-source-using-git">
+<h2>From source using git<a class="headerlink" href="#from-source-using-git" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Clone the ts-train repo at a location of your choice (denoted here as <code class="docutils literal notranslate"><span class="pre">/path/to</span></code>)</p></li>
+</ol>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">git clone https://github.com/minesh1291/ts-train.git /path/to/ts-train</span>
+<span class="go">cd /path/to/ts-train</span>
+<span class="go">python setup.py install</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
 </div>
 
 
