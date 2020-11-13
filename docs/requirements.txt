@@ -5,4 +5,4 @@ sphinx==3.1.0
 
 pandas
 scipy
-tensorflow==2.2.0
+tensorflow==2.3.1
