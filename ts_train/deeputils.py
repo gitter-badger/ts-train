@@ -4,8 +4,10 @@ Deep Learning utilities (:mod:`ts_train.deeputils`)
 .. currentmodule:: ts_train.deeputils
 .. autosummary::
    plot_lcurve
+   TimedStopping
    
 .. autofunction:: plot_lcurve
+.. autoclass:: TimedStopping
 """
 import time
 from typing import List 
