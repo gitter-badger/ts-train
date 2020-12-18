@@ -335,20 +335,33 @@ by interpolation</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ts_train.deeputils.plot_lcurve" title="ts_train.deeputils.plot_lcurve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_lcurve</span></code></a>(model[, metrics, name])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ts_train.deeputils.plot_lcurve" title="ts_train.deeputils.plot_lcurve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_lcurve</span></code></a>(model[, metrics, img_name])</p></td>
 <td><p>Plot Learning Curve</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py function">
 <dt id="ts_train.deeputils.plot_lcurve">
-<code class="sig-prename descclassname">ts_train.deeputils.</code><code class="sig-name descname">plot_lcurve</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">metrics</span><span class="o">=</span><span class="default_value">['loss']</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'default.jpg'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ts_train/deeputils.html#plot_lcurve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ts_train.deeputils.plot_lcurve" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">ts_train.deeputils.</code><code class="sig-name descname">plot_lcurve</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">metrics</span><span class="p">:</span> <span class="n">List<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">['loss']</span></em>, <em class="sig-param"><span class="n">img_name</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'default.jpg'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ts_train/deeputils.html#plot_lcurve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ts_train.deeputils.plot_lcurve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot Learning Curve</p>
-<dl class="simple">
-<dt>Usage: </dt><dd><p>model = get_model()
-model.compile()
-model.fit()
-plot_lcurve(model)</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>model: keras.models.Model</dt><dd><p>Fitted Model</p>
+</dd>
+<dt>metrics: List[str]</dt><dd><p>Metrics to plot</p>
+</dd>
+<dt>img_name: str</dt><dd><p>Name &amp; Path for image file to save</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Example</dt>
+<dd class="field-even"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_lcurve</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
