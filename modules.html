@@ -88,6 +88,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Modules</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#data-transformation-ts-train-data">Data transformation (<code class="xref py py-mod docutils literal notranslate"><span class="pre">ts_train.data</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#data-transformation-for-deep-learning-ts-train-deepdata">Data transformation for deep learning (<code class="xref py py-mod docutils literal notranslate"><span class="pre">ts_train.deepdata</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#deep-learning-utilities-ts-train-deeputils">Deep Learning utilities (<code class="xref py py-mod docutils literal notranslate"><span class="pre">ts_train.deeputils</span></code>)</a></li>
 </ul>
 </li>
 </ul>
@@ -168,6 +169,9 @@
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#module-ts_train.deepdata" title="ts_train.deepdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ts_train.deepdata</span></code></a></p></td>
 <td><p>Data transformation for deep learning (<a class="reference internal" href="#module-ts_train.deepdata" title="ts_train.deepdata"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ts_train.deepdata</span></code></a>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#module-ts_train.deeputils" title="ts_train.deeputils"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ts_train.deeputils</span></code></a></p></td>
+<td><p>Deep Learning utilities (<a class="reference internal" href="#module-ts_train.deeputils" title="ts_train.deeputils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ts_train.deeputils</span></code></a>)</p></td>
 </tr>
 </tbody>
 </table>
@@ -318,6 +322,33 @@ by interpolation</p>
 <span class="go">        print(f&#39;features:{features_tensor} target:{target_tensor}&#39;)</span>
 </pre></div>
 </div>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<span class="target" id="module-ts_train.deeputils"></span><div class="section" id="deep-learning-utilities-ts-train-deeputils">
+<h2>Deep Learning utilities (<a class="reference internal" href="#module-ts_train.deeputils" title="ts_train.deeputils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ts_train.deeputils</span></code></a>)<a class="headerlink" href="#deep-learning-utilities-ts-train-deeputils" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ts_train.deeputils.plot_lcurve" title="ts_train.deeputils.plot_lcurve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_lcurve</span></code></a>(model[, metrics, name])</p></td>
+<td><p>Plot Learning Curve</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt id="ts_train.deeputils.plot_lcurve">
+<code class="sig-prename descclassname">ts_train.deeputils.</code><code class="sig-name descname">plot_lcurve</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">metrics</span><span class="o">=</span><span class="default_value">['loss']</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'default.jpg'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ts_train/deeputils.html#plot_lcurve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ts_train.deeputils.plot_lcurve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot Learning Curve</p>
+<dl class="simple">
+<dt>Usage: </dt><dd><p>model = get_model()
+model.compile()
+model.fit()
+plot_lcurve(model)</p>
 </dd>
 </dl>
 </dd></dl>
