@@ -8,39 +8,63 @@ Deep Learning utilities (:mod:`ts_train.deeputils`)
 .. autofunction:: plot_lcurve
 """
 import time
+from typing import List 
 import matplotlib.pyplot as plt
 from tensorflow.keras.callbacks import Callback
 
-def plot_lcurve(model, metrics=["loss"], name="default.jpg"):
-    '''Plot Learning Curve
+def plot_lcurve(model, metrics: List[str]=["loss"], img_name: str="default.jpg"):
+    '''
+    Plot Learning Curve
     
-    Usage: 
-        model = get_model()
-        model.compile()
-        model.fit()
-        plot_lcurve(model)
+    :Parameters:
+    
+      model: keras.models.Model
+         Fitted Model
+      
+      metrics: List[str]
+         Metrics to plot
+      
+      img_name: str
+         Name & Path for image file to save
+      
+    :Example: 
+        >>> model = get_model()
+        >>> model.compile()
+        >>> model.fit()
+        >>> plot_lcurve(model)
     '''
     fig, ax = plt.subplots(len(metrics),1, figsize=(8, 6))
     if len(metrics)==1:
         ax=[ax]
+      
     for metric, axi in zip(metrics, ax):
         axi.set_title(metric)
         axi.plot(model.history.history[metric], ".--", label="tr")
         axi.plot(model.history.history[f'val_{metric}'], ".--", label="val")
         axi.legend()
     plt.tight_layout()
-    plt.savefig(name)
+    plt.savefig(img_name)
     plt.show()
 
 
 
 class TimedStopping(Callback):
-    '''Stop training when enough time has passed.
-    # Arguments
-        seconds: maximum time before stopping.
-        safety_factor: stop safety_factor * average_time_per_epoch earlier
-        verbose: verbosity mode.
-    https://github.com/keras-team/keras/issues/1625#issuecomment-278336908
+    '''
+    Stop training when enough time has passed.
+    
+    :Parameters:
+        
+        seconds: 
+            maximum time before stopping.
+        
+        safety_factor: 
+            stop safety_factor * average_time_per_epoch earlier
+        
+        verbose: 
+            verbosity mode.
+    
+    :References:
+        https://github.com/keras-team/keras/issues/1625#issuecomment-278336908
     '''
     def __init__(self, seconds=None, safety_factor=1, verbose=0):
         super(Callback, self).__init__()
