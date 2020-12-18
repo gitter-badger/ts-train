@@ -338,6 +338,9 @@ by interpolation</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ts_train.deeputils.plot_lcurve" title="ts_train.deeputils.plot_lcurve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_lcurve</span></code></a>(model[, metrics, img_name])</p></td>
 <td><p>Plot Learning Curve</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ts_train.deeputils.TimedStopping" title="ts_train.deeputils.TimedStopping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TimedStopping</span></code></a>([seconds, safety_factor, verbose])</p></td>
+<td><p>Stop training when enough time has passed.</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py function">
@@ -362,6 +365,27 @@ by interpolation</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_lcurve</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 </pre></div>
 </div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="ts_train.deeputils.TimedStopping">
+<em class="property">class </em><code class="sig-prename descclassname">ts_train.deeputils.</code><code class="sig-name descname">TimedStopping</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seconds</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">safety_factor</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ts_train/deeputils.html#TimedStopping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ts_train.deeputils.TimedStopping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop training when enough time has passed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>seconds: </dt><dd><p>maximum time before stopping.</p>
+</dd>
+<dt>safety_factor: </dt><dd><p>stop safety_factor * average_time_per_epoch earlier</p>
+</dd>
+<dt>verbose: </dt><dd><p>verbosity mode.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">References</dt>
+<dd class="field-even"><p><a class="reference external" href="https://github.com/keras-team/keras/issues/1625#issuecomment-278336908">https://github.com/keras-team/keras/issues/1625#issuecomment-278336908</a></p>
 </dd>
 </dl>
 </dd></dl>

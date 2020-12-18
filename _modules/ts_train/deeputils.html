@@ -155,8 +155,10 @@
 <span class="sd">.. currentmodule:: ts_train.deeputils</span>
 <span class="sd">.. autosummary::</span>
 <span class="sd">   plot_lcurve</span>
+<span class="sd">   TimedStopping</span>
 <span class="sd">   </span>
 <span class="sd">.. autofunction:: plot_lcurve</span>
+<span class="sd">.. autoclass:: TimedStopping</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span> 
@@ -199,7 +201,7 @@
 
 
 
-<span class="k">class</span> <span class="nc">TimedStopping</span><span class="p">(</span><span class="n">Callback</span><span class="p">):</span>
+<div class="viewcode-block" id="TimedStopping"><a class="viewcode-back" href="../../modules.html#ts_train.deeputils.TimedStopping">[docs]</a><span class="k">class</span> <span class="nc">TimedStopping</span><span class="p">(</span><span class="n">Callback</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Stop training when enough time has passed.</span>
 <span class="sd">    </span>
@@ -240,7 +242,7 @@
         <span class="k">if</span> <span class="n">elapsed_time</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">seconds</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">safety_factor</span> <span class="o">*</span> <span class="n">avg_elapsed_time</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">stop_training</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Stopping after </span><span class="si">%s</span><span class="s1"> seconds.&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">seconds</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Stopping after </span><span class="si">%s</span><span class="s1"> seconds.&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">seconds</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
