@@ -132,3 +132,16 @@ def series2matrix(in_series: Union[pd.Series, np.ndarray, list], w: int=50, padd
     return df.dropna()
 
 
+def create_sequences(values: np.array, time_steps: int=32, skip_steps: int=1, ignore_last: int=0):
+    """
+    Generated training sequences for use in the model.
+    
+    :Examples:
+        >>> x_train = create_sequences(train_feature.values, time_steps=TIME_STEPS, ignore_last=0)
+        >>> print("Training input shape: ", x_train.shape)
+    """
+    output = []
+    for i in range(0, len(values) - time_steps, skip_steps):
+        output.append(values[i : (i + time_steps - ignore_last)])
+        
+    return np.stack(output)
