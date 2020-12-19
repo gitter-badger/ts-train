@@ -8,12 +8,16 @@ Data transformation (:mod:`ts_train.data`)
    clean_time_series
    interpolate_series
    series2matrix
+   create_sequences
+   transfrom_all_data
+   make_features
    
 .. autofunction:: clean_time_series
 .. autofunction:: interpolate_series
 .. autofunction:: series2matrix
-
-     
+.. autofunction:: create_sequences
+.. autofunction:: transfrom_all_data
+.. autofunction:: make_features
 
 """
 from typing import Union, List
@@ -145,3 +149,50 @@ def create_sequences(values: np.array, time_steps: int=32, skip_steps: int=1, ig
         output.append(values[i : (i + time_steps - ignore_last)])
         
     return np.stack(output)
+
+
+def transfrom_all_data(transformer, train: pd.DataFrame, test: pd.DataFrame, feature_list=None):
+    """
+    Apply transformer to train and test features
+    
+    :Example:
+        >>> logTrans = FunctionTransformer(np.log1p)
+        >>> train_trans, test_trans = transfrom_all_data(transformer, train, test, feature_list)
+    """
+    train_trans = transformer.fit_transform(train[feature_list])
+    if len(test):
+        test_trans = transformer.transform(test[feature_list])
+    else:
+        test_trans = None
+    
+    if type(train_trans) != np.ndarray:
+        train_trans = np.array(train_trans)
+        if len(test):
+            test_trans = np.array(test_trans)
+    
+    return train_trans, test_trans
+
+
+def make_features(transformer, train: pd.DataFrame, test: pd.DataFrame, feature_list: List[str], name: str, 
+                  normalize: bool=False, scaler=None):
+    """
+    Add newly generated transformed features to train and test dataframe
+    
+    :Example:
+        >>> scaler = StandardScaler()
+        >>> logTrans = FunctionTransformer(np.log1p)
+        >>> train_X, val_X = make_features(qTrans, train_X, val_X, feature_list=range(10), name="qTrans", normalize=False, scaler=scaler)
+    """
+    train, test = train.copy(), test.copy()
+    train_trans, test_trans = transfrom_all_data(transformer, train, test, feature_list)
+    
+    if normalize and scaler is not None:
+        train_trans = scaler.fit_transform(train_trans).astype(np.float32)
+        test_trans = scaler.transform(test_trans).astype(np.float32)
+    
+    for i in range(train_trans.shape[1]):
+        train['{0}_{1}'.format(name, i)] = train_trans[:, i]
+        if len(test):
+            test['{0}_{1}'.format(name, i)] = test_trans[:, i]
+        
+    return train, test
