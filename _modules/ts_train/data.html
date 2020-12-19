@@ -159,12 +159,16 @@
 <span class="sd">   clean_time_series</span>
 <span class="sd">   interpolate_series</span>
 <span class="sd">   series2matrix</span>
+<span class="sd">   create_sequences</span>
+<span class="sd">   transfrom_all_data</span>
+<span class="sd">   make_features</span>
 <span class="sd">   </span>
 <span class="sd">.. autofunction:: clean_time_series</span>
 <span class="sd">.. autofunction:: interpolate_series</span>
 <span class="sd">.. autofunction:: series2matrix</span>
-
-<span class="sd">     </span>
+<span class="sd">.. autofunction:: create_sequences</span>
+<span class="sd">.. autofunction:: transfrom_all_data</span>
+<span class="sd">.. autofunction:: make_features</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
@@ -283,7 +287,7 @@
     <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span></div>
 
 
-<span class="k">def</span> <span class="nf">create_sequences</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">time_steps</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">skip_steps</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ignore_last</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="create_sequences"><a class="viewcode-back" href="../../modules.html#ts_train.data.create_sequences">[docs]</a><span class="k">def</span> <span class="nf">create_sequences</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">time_steps</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">skip_steps</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ignore_last</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generated training sequences for use in the model.</span>
 <span class="sd">    </span>
@@ -295,7 +299,54 @@
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">-</span> <span class="n">time_steps</span><span class="p">,</span> <span class="n">skip_steps</span><span class="p">):</span>
         <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">time_steps</span> <span class="o">-</span> <span class="n">ignore_last</span><span class="p">)])</span>
         
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">output</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="transfrom_all_data"><a class="viewcode-back" href="../../modules.html#ts_train.data.transfrom_all_data">[docs]</a><span class="k">def</span> <span class="nf">transfrom_all_data</span><span class="p">(</span><span class="n">transformer</span><span class="p">,</span> <span class="n">train</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">test</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">feature_list</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply transformer to train and test features</span>
+<span class="sd">    </span>
+<span class="sd">    :Example:</span>
+<span class="sd">        &gt;&gt;&gt; logTrans = FunctionTransformer(np.log1p)</span>
+<span class="sd">        &gt;&gt;&gt; train_trans, test_trans = transfrom_all_data(transformer, train, test, feature_list)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">train_trans</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="n">feature_list</span><span class="p">])</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">test</span><span class="p">):</span>
+        <span class="n">test_trans</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">test</span><span class="p">[</span><span class="n">feature_list</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">test_trans</span> <span class="o">=</span> <span class="kc">None</span>
+    
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">train_trans</span><span class="p">)</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="n">train_trans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">train_trans</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">test</span><span class="p">):</span>
+            <span class="n">test_trans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">test_trans</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">train_trans</span><span class="p">,</span> <span class="n">test_trans</span></div>
+
+
+<div class="viewcode-block" id="make_features"><a class="viewcode-back" href="../../modules.html#ts_train.data.make_features">[docs]</a><span class="k">def</span> <span class="nf">make_features</span><span class="p">(</span><span class="n">transformer</span><span class="p">,</span> <span class="n">train</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">test</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">feature_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                  <span class="n">normalize</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scaler</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add newly generated transformed features to train and test dataframe</span>
+<span class="sd">    </span>
+<span class="sd">    :Example:</span>
+<span class="sd">        &gt;&gt;&gt; scaler = StandardScaler()</span>
+<span class="sd">        &gt;&gt;&gt; logTrans = FunctionTransformer(np.log1p)</span>
+<span class="sd">        &gt;&gt;&gt; train_X, val_X = make_features(qTrans, train_X, val_X, feature_list=range(10), name=&quot;qTrans&quot;, normalize=False, scaler=scaler)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">test</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">train_trans</span><span class="p">,</span> <span class="n">test_trans</span> <span class="o">=</span> <span class="n">transfrom_all_data</span><span class="p">(</span><span class="n">transformer</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">feature_list</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">normalize</span> <span class="ow">and</span> <span class="n">scaler</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">train_trans</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">train_trans</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="n">test_trans</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">test_trans</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">train_trans</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="n">train</span><span class="p">[</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">_</span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="n">train_trans</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">test</span><span class="p">):</span>
+            <span class="n">test</span><span class="p">[</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">_</span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="n">test_trans</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span>
+        
+    <span class="k">return</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span></div>
 </pre></div>
 
            </div>

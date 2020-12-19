@@ -192,6 +192,15 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ts_train.data.series2matrix" title="ts_train.data.series2matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">series2matrix</span></code></a>(in_series[, w, padding])</p></td>
 <td><p>Generate matrix with rolling window from 1D iterator.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ts_train.data.create_sequences" title="ts_train.data.create_sequences"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_sequences</span></code></a>(values[, time_steps, …])</p></td>
+<td><p>Generated training sequences for use in the model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ts_train.data.transfrom_all_data" title="ts_train.data.transfrom_all_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transfrom_all_data</span></code></a>(transformer, train, test)</p></td>
+<td><p>Apply transformer to train and test features</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ts_train.data.make_features" title="ts_train.data.make_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_features</span></code></a>(transformer, train, test, …)</p></td>
+<td><p>Add newly generated transformed features to train and test dataframe</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py function">
@@ -266,6 +275,49 @@ by interpolation</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sr</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">ls</span><span class="p">)</span> <span class="c1"># sr = np.array(ls) # sr = ls</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data_df</span> <span class="o">=</span> <span class="n">series2matrix</span><span class="p">(</span><span class="n">sr</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="mi">2526</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">7475</span><span class="p">,</span> <span class="mi">2526</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ts_train.data.create_sequences">
+<code class="sig-prename descclassname">ts_train.data.</code><code class="sig-name descname">create_sequences</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">values</span><span class="p">:</span> <span class="n">numpy.array</span></em>, <em class="sig-param"><span class="n">time_steps</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">32</span></em>, <em class="sig-param"><span class="n">skip_steps</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1</span></em>, <em class="sig-param"><span class="n">ignore_last</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ts_train/data.html#create_sequences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ts_train.data.create_sequences" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generated training sequences for use in the model.</p>
+<dl class="field-list">
+<dt class="field-odd">Examples</dt>
+<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x_train</span> <span class="o">=</span> <span class="n">create_sequences</span><span class="p">(</span><span class="n">train_feature</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">time_steps</span><span class="o">=</span><span class="n">TIME_STEPS</span><span class="p">,</span> <span class="n">ignore_last</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training input shape: &quot;</span><span class="p">,</span> <span class="n">x_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ts_train.data.transfrom_all_data">
+<code class="sig-prename descclassname">ts_train.data.</code><code class="sig-name descname">transfrom_all_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">transformer</span></em>, <em class="sig-param"><span class="n">train</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">test</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">feature_list</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ts_train/data.html#transfrom_all_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ts_train.data.transfrom_all_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply transformer to train and test features</p>
+<dl class="field-list">
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">logTrans</span> <span class="o">=</span> <span class="n">FunctionTransformer</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">train_trans</span><span class="p">,</span> <span class="n">test_trans</span> <span class="o">=</span> <span class="n">transfrom_all_data</span><span class="p">(</span><span class="n">transformer</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">feature_list</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ts_train.data.make_features">
+<code class="sig-prename descclassname">ts_train.data.</code><code class="sig-name descname">make_features</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">transformer</span></em>, <em class="sig-param"><span class="n">train</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">test</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">feature_list</span><span class="p">:</span> <span class="n">List<span class="p">[</span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">normalize</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">scaler</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ts_train/data.html#make_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ts_train.data.make_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add newly generated transformed features to train and test dataframe</p>
+<dl class="field-list">
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logTrans</span> <span class="o">=</span> <span class="n">FunctionTransformer</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">train_X</span><span class="p">,</span> <span class="n">val_X</span> <span class="o">=</span> <span class="n">make_features</span><span class="p">(</span><span class="n">qTrans</span><span class="p">,</span> <span class="n">train_X</span><span class="p">,</span> <span class="n">val_X</span><span class="p">,</span> <span class="n">feature_list</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;qTrans&quot;</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scaler</span><span class="o">=</span><span class="n">scaler</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd>
