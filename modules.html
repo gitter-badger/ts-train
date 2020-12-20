@@ -390,7 +390,10 @@ by interpolation</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ts_train.deeputils.plot_lcurve" title="ts_train.deeputils.plot_lcurve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_lcurve</span></code></a>(model[, metrics, img_name])</p></td>
 <td><p>Plot Learning Curve</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ts_train.deeputils.TimedStopping" title="ts_train.deeputils.TimedStopping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TimedStopping</span></code></a>([seconds, safety_factor, verbose])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ts_train.deeputils.add_l1l2_regularizer" title="ts_train.deeputils.add_l1l2_regularizer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_l1l2_regularizer</span></code></a>(model[, l1, l2, …])</p></td>
+<td><p>Add L1L2 regularization to the whole model with pre-trained weights.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ts_train.deeputils.TimedStopping" title="ts_train.deeputils.TimedStopping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TimedStopping</span></code></a>([seconds, safety_factor, verbose])</p></td>
 <td><p>Stop training when enough time has passed.</p></td>
 </tr>
 </tbody>
@@ -415,6 +418,20 @@ by interpolation</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plot_lcurve</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ts_train.deeputils.add_l1l2_regularizer">
+<code class="sig-prename descclassname">ts_train.deeputils.</code><code class="sig-name descname">add_l1l2_regularizer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">l1</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">l2</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">reg_attributes</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ts_train/deeputils.html#add_l1l2_regularizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ts_train.deeputils.add_l1l2_regularizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add L1L2 regularization to the whole model with pre-trained weights.
+- NOTE: This will save and reload the model. Do not call this function inplace but with</p>
+<dl class="field-list">
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">add_l1l2_regularizer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd>

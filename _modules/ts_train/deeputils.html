@@ -155,12 +155,16 @@
 <span class="sd">.. currentmodule:: ts_train.deeputils</span>
 <span class="sd">.. autosummary::</span>
 <span class="sd">   plot_lcurve</span>
+<span class="sd">   add_l1l2_regularizer</span>
 <span class="sd">   TimedStopping</span>
 <span class="sd">   </span>
 <span class="sd">.. autofunction:: plot_lcurve</span>
+<span class="sd">.. autofunction:: add_l1l2_regularizer</span>
 <span class="sd">.. autoclass:: TimedStopping</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span> 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">tensorflow.keras.callbacks</span> <span class="kn">import</span> <span class="n">Callback</span>
@@ -243,6 +247,44 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">stop_training</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Stopping after </span><span class="si">%s</span><span class="s1"> seconds.&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">seconds</span><span class="p">)</span></div>
+
+              
+
+<div class="viewcode-block" id="add_l1l2_regularizer"><a class="viewcode-back" href="../../modules.html#ts_train.deeputils.add_l1l2_regularizer">[docs]</a><span class="k">def</span> <span class="nf">add_l1l2_regularizer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">l1</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">l2</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">reg_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add L1L2 regularization to the whole model with pre-trained weights.</span>
+<span class="sd">    - NOTE: This will save and reload the model. Do not call this function inplace but with</span>
+<span class="sd">    </span>
+<span class="sd">    :Example:</span>
+<span class="sd">        &gt;&gt;&gt; model = add_l1l2_regularizer(model, ...)</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">reg_attributes</span><span class="p">:</span>
+        <span class="n">reg_attributes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;kernel_regularizer&#39;</span><span class="p">,</span> <span class="s1">&#39;bias_regularizer&#39;</span><span class="p">,</span>
+                          <span class="s1">&#39;beta_regularizer&#39;</span><span class="p">,</span> <span class="s1">&#39;gamma_regularizer&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reg_attributes</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">reg_attributes</span> <span class="o">=</span> <span class="p">[</span><span class="n">reg_attributes</span><span class="p">]</span>
+
+    <span class="n">regularizer</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">regularizers</span><span class="o">.</span><span class="n">l1_l2</span><span class="p">(</span><span class="n">l1</span><span class="o">=</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="o">=</span><span class="n">l2</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">reg_attributes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">layer</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">regularizer</span><span class="p">)</span>
+
+    <span class="c1"># So far, the regularizers only exist in the model config. We need to</span>
+    <span class="c1"># reload the model so that Keras adds them to each layer&#39;s losses.</span>
+    <span class="n">model_json</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+
+    <span class="c1"># Save the weights before reloading the model.</span>
+    <span class="n">tmp_weights_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span><span class="p">(),</span> <span class="s1">&#39;tmp_weights.h5&#39;</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">save_weights</span><span class="p">(</span><span class="n">tmp_weights_path</span><span class="p">)</span>
+
+    <span class="c1"># Reload the model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">model_from_json</span><span class="p">(</span><span class="n">model_json</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="n">tmp_weights_path</span><span class="p">,</span> <span class="n">by_name</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">model</span></div>
 </pre></div>
 
            </div>
