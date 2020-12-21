@@ -166,8 +166,11 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span> 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">tensorflow.keras.callbacks</span> <span class="kn">import</span> <span class="n">Callback</span>
+<span class="kn">import</span> <span class="nn">tensorflow.keras.backend</span> <span class="k">as</span> <span class="nn">K</span>
+
 
 <div class="viewcode-block" id="plot_lcurve"><a class="viewcode-back" href="../../modules.html#ts_train.deeputils.plot_lcurve">[docs]</a><span class="k">def</span> <span class="nf">plot_lcurve</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">metrics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;loss&quot;</span><span class="p">],</span> <span class="n">img_name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;default.jpg&quot;</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
@@ -202,7 +205,6 @@
     <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">img_name</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
-
 
 
 <div class="viewcode-block" id="TimedStopping"><a class="viewcode-back" href="../../modules.html#ts_train.deeputils.TimedStopping">[docs]</a><span class="k">class</span> <span class="nc">TimedStopping</span><span class="p">(</span><span class="n">Callback</span><span class="p">):</span>
@@ -248,7 +250,100 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Stopping after </span><span class="si">%s</span><span class="s1"> seconds.&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">seconds</span><span class="p">)</span></div>
 
-              
+
+<span class="k">class</span> <span class="nc">SGDRScheduler</span><span class="p">(</span><span class="n">Callback</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Cosine annealing learning rate scheduler with periodic restarts.</span>
+<span class="sd">    :Example:</span>
+<span class="sd">        ```python</span>
+<span class="sd">            schedule = SGDRScheduler(min_lr=1e-5,</span>
+<span class="sd">                                     max_lr=1e-2,</span>
+<span class="sd">                                     steps_per_epoch=np.ceil(epoch_size/batch_size),</span>
+<span class="sd">                                     lr_decay=0.9,</span>
+<span class="sd">                                     cycle_length=5,</span>
+<span class="sd">                                     mult_factor=1.5)</span>
+<span class="sd">            model.fit(X_train, Y_train, epochs=100, callbacks=[schedule])</span>
+<span class="sd">        ```</span>
+<span class="sd">    :Parameters:</span>
+<span class="sd">        </span>
+<span class="sd">        min_lr: </span>
+<span class="sd">            The lower bound of the learning rate range for the experiment.</span>
+<span class="sd">        </span>
+<span class="sd">        max_lr: </span>
+<span class="sd">            The upper bound of the learning rate range for the experiment.</span>
+<span class="sd">        </span>
+<span class="sd">        steps_per_epoch: </span>
+<span class="sd">            Number of mini-batches in the dataset. Calculated as `np.ceil(epoch_size/batch_size)`. </span>
+<span class="sd">        </span>
+<span class="sd">        lr_decay: </span>
+<span class="sd">            Reduce the max_lr after the completion of each cycle.</span>
+<span class="sd">                  Ex. To reduce the max_lr by 20% after each cycle, set this value to 0.8.</span>
+<span class="sd">        </span>
+<span class="sd">        cycle_length: </span>
+<span class="sd">            Initial number of epochs in a cycle.</span>
+<span class="sd">        </span>
+<span class="sd">        mult_factor: </span>
+<span class="sd">            Scale epochs_to_restart after each full cycle completion.</span>
+<span class="sd">    :References:</span>
+<span class="sd">        Original paper: </span>
+<span class="sd">            http://arxiv.org/abs/1608.03983</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">min_lr</span><span class="p">,</span>
+                 <span class="n">max_lr</span><span class="p">,</span>
+                 <span class="n">steps_per_epoch</span><span class="p">,</span>
+                 <span class="n">lr_decay</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                 <span class="n">cycle_length</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                 <span class="n">mult_factor</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_lr</span> <span class="o">=</span> <span class="n">min_lr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_lr</span> <span class="o">=</span> <span class="n">max_lr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lr_decay</span> <span class="o">=</span> <span class="n">lr_decay</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_since_restart</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">next_restart</span> <span class="o">=</span> <span class="n">cycle_length</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">steps_per_epoch</span> <span class="o">=</span> <span class="n">steps_per_epoch</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cycle_length</span> <span class="o">=</span> <span class="n">cycle_length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mult_factor</span> <span class="o">=</span> <span class="n">mult_factor</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">history</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">clr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Calculate the learning rate.&#39;&#39;&#39;</span>
+        <span class="n">fraction_to_restart</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_since_restart</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">steps_per_epoch</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">cycle_length</span><span class="p">)</span>
+        <span class="n">lr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_lr</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_lr</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_lr</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">fraction_to_restart</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">lr</span>
+
+    <span class="k">def</span> <span class="nf">on_train_begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logs</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="sd">&#39;&#39;&#39;Initialize the learning rate to the minimum value at the start of training.&#39;&#39;&#39;</span>
+        <span class="n">logs</span> <span class="o">=</span> <span class="n">logs</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="n">K</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">lr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_lr</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">on_batch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">logs</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="sd">&#39;&#39;&#39;Record previous batch statistics and update the learning rate.&#39;&#39;&#39;</span>
+        <span class="n">logs</span> <span class="o">=</span> <span class="n">logs</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;lr&#39;</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">K</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">lr</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">logs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_since_restart</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">K</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">lr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">clr</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">on_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">logs</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="sd">&#39;&#39;&#39;Check for end of current cycle, apply restarts when necessary.&#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_restart</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">batch_since_restart</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cycle_length</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cycle_length</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">mult_factor</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">next_restart</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cycle_length</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">max_lr</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lr_decay</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">best_weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_weights</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">on_train_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logs</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="sd">&#39;&#39;&#39;Set weights to the values from the end of the most recent cycle for best performance.&#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">set_weights</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">best_weights</span><span class="p">)</span>
+      
 
 <div class="viewcode-block" id="add_l1l2_regularizer"><a class="viewcode-back" href="../../modules.html#ts_train.deeputils.add_l1l2_regularizer">[docs]</a><span class="k">def</span> <span class="nf">add_l1l2_regularizer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">l1</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">l2</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">reg_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
