@@ -12,6 +12,7 @@ Data transformation (:mod:`ts_train.data`)
    transfrom_all_data
    make_features
    reduce_mem_usage
+   deduplicate_column_names
    
 .. autofunction:: clean_time_series
 .. autofunction:: interpolate_series
@@ -20,6 +21,7 @@ Data transformation (:mod:`ts_train.data`)
 .. autofunction:: transfrom_all_data
 .. autofunction:: make_features
 .. autofunction:: reduce_mem_usage
+.. autofunction:: deduplicate_column_names
 
 """
 from typing import Union, List
@@ -198,6 +200,18 @@ def make_features(transformer, train: pd.DataFrame, test: pd.DataFrame, feature_
             test['{0}_{1}'.format(name, i)] = test_trans[:, i]
         
     return train, test
+
+def deduplicate_column_names(df):
+    """
+    Deduplicate column names by adding suffix f"_{i}" 
+    """
+    df.columns = [
+        x[1]
+        if x[1] not in df.columns[: x[0]]
+        else f"{x[1]}_{list(df.columns[:x[0]]).count(x[1])}"
+        for x in enumerate(df.columns)
+    ]
+    return df
 
 
 def reduce_mem_usage(df: pd.DataFrame, verbose: bool = True) -> pd.DataFrame:
