@@ -201,6 +201,9 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#ts_train.data.make_features" title="ts_train.data.make_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_features</span></code></a>(transformer, train, test, …)</p></td>
 <td><p>Add newly generated transformed features to train and test dataframe</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ts_train.data.reduce_mem_usage" title="ts_train.data.reduce_mem_usage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce_mem_usage</span></code></a>(df[, verbose])</p></td>
+<td><p>Reduce memory usage by converting data types of numerical columns</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py function">
@@ -318,6 +321,20 @@ by interpolation</p>
 <dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">logTrans</span> <span class="o">=</span> <span class="n">FunctionTransformer</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">train_X</span><span class="p">,</span> <span class="n">val_X</span> <span class="o">=</span> <span class="n">make_features</span><span class="p">(</span><span class="n">qTrans</span><span class="p">,</span> <span class="n">train_X</span><span class="p">,</span> <span class="n">val_X</span><span class="p">,</span> <span class="n">feature_list</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;qTrans&quot;</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scaler</span><span class="o">=</span><span class="n">scaler</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ts_train.data.reduce_mem_usage">
+<code class="sig-prename descclassname">ts_train.data.</code><code class="sig-name descname">reduce_mem_usage</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/ts_train/data.html#reduce_mem_usage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ts_train.data.reduce_mem_usage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reduce memory usage by converting data types of numerical columns</p>
+<dl class="field-list">
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">reduce_mem_usage</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="go">    Mem. usage decreased to 124.30 MB (6.0 % reduction)</span>
 </pre></div>
 </div>
 </dd>
