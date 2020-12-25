@@ -9,6 +9,7 @@ Data transformation (:mod:`ts_train.data`)
    interpolate_series
    series2matrix
    create_sequences
+   window_generation_for_tsfresh
    transfrom_all_data
    make_features
    reduce_mem_usage
@@ -18,6 +19,7 @@ Data transformation (:mod:`ts_train.data`)
 .. autofunction:: interpolate_series
 .. autofunction:: series2matrix
 .. autofunction:: create_sequences
+.. autofunction:: window_generation_for_tsfresh
 .. autofunction:: transfrom_all_data
 .. autofunction:: make_features
 .. autofunction:: reduce_mem_usage
@@ -139,7 +141,52 @@ def series2matrix(in_series: Union[pd.Series, np.ndarray, list], w: int=50, padd
     
     return df.dropna()
 
+   
+def window_generation_for_tsfresh(series, w=21, id_shift=None):
+    """
+    Window generation for tsfresh
+    
+    w = odd windowsize
+    window is right aligned inclusive of current position (row)
+    
+    :Example:
+        >>> df = pd.DataFrame()
+        >>> df["t"] = np.arange(1, 200)
+        >>> sample_windows_df = window_generation_for_tsfresh(df["t"], w=5)
+        >>> print(sample_windows_df.shape)
+        >>> sample_windows_df[:6]
+            sample_id	order	 t
+                    2	0      0.0
+                        1      1.0
+                        2      2.0
+                    3	0      1.0
+                        1      2.0
+                        2      3.0
+    """
 
+    org_col = f"t+{(w//2)}"
+    df = pd.DataFrame({org_col: series})
+    
+    if not id_shift:
+        id_shift = -(w // 2) - 1
+        
+    # left-shift
+    for i in range(1, (w // 2) + 1):
+        df["t+" + str((w // 2) - i)] = df[org_col].shift(i)
+
+    # right-shift
+    for i in range(1, (w // 2) + 1):
+        df["t+" + str(i + w // 2)] = df[org_col].shift(-i)
+
+    df = df.fillna(0)
+    df["sample_id"] = df.index.to_series().shift(periods=id_shift)
+    df = df.dropna()
+    df["sample_id"] = df["sample_id"].astype("i")
+
+    df = pd.wide_to_long(df, stubnames="t", i=["sample_id"], j="order", sep="+")
+    return df.sort_index(0)
+   
+   
 def create_sequences(values: np.array, time_steps: int=32, skip_steps: int=1, ignore_last: int=0):
     """
     Generated training sequences for use in the model.
