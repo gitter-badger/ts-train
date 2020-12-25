@@ -195,16 +195,19 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#ts_train.data.create_sequences" title="ts_train.data.create_sequences"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_sequences</span></code></a>(values[, time_steps, …])</p></td>
 <td><p>Generated training sequences for use in the model.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ts_train.data.transfrom_all_data" title="ts_train.data.transfrom_all_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transfrom_all_data</span></code></a>(transformer, train, test)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ts_train.data.window_generation_for_tsfresh" title="ts_train.data.window_generation_for_tsfresh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">window_generation_for_tsfresh</span></code></a>(series[, w, …])</p></td>
+<td><p>Window generation for tsfresh</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ts_train.data.transfrom_all_data" title="ts_train.data.transfrom_all_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transfrom_all_data</span></code></a>(transformer, train, test)</p></td>
 <td><p>Apply transformer to train and test features</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ts_train.data.make_features" title="ts_train.data.make_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_features</span></code></a>(transformer, train, test, …)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ts_train.data.make_features" title="ts_train.data.make_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_features</span></code></a>(transformer, train, test, …)</p></td>
 <td><p>Add newly generated transformed features to train and test dataframe</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ts_train.data.reduce_mem_usage" title="ts_train.data.reduce_mem_usage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce_mem_usage</span></code></a>(df[, verbose])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ts_train.data.reduce_mem_usage" title="ts_train.data.reduce_mem_usage"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce_mem_usage</span></code></a>(df[, verbose])</p></td>
 <td><p>Reduce memory usage by converting data types of numerical columns</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ts_train.data.deduplicate_column_names" title="ts_train.data.deduplicate_column_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deduplicate_column_names</span></code></a>(df)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ts_train.data.deduplicate_column_names" title="ts_train.data.deduplicate_column_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deduplicate_column_names</span></code></a>(df)</p></td>
 <td><p>Deduplicate column names by adding suffix f”_{i}”</p></td>
 </tr>
 </tbody>
@@ -295,6 +298,32 @@ by interpolation</p>
 <dt class="field-odd">Examples</dt>
 <dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x_train</span> <span class="o">=</span> <span class="n">create_sequences</span><span class="p">(</span><span class="n">train_feature</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">time_steps</span><span class="o">=</span><span class="n">TIME_STEPS</span><span class="p">,</span> <span class="n">ignore_last</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training input shape: &quot;</span><span class="p">,</span> <span class="n">x_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="ts_train.data.window_generation_for_tsfresh">
+<code class="sig-prename descclassname">ts_train.data.</code><code class="sig-name descname">window_generation_for_tsfresh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">series</span></em>, <em class="sig-param"><span class="n">w</span><span class="o">=</span><span class="default_value">21</span></em>, <em class="sig-param"><span class="n">id_shift</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ts_train/data.html#window_generation_for_tsfresh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ts_train.data.window_generation_for_tsfresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Window generation for tsfresh</p>
+<p>w = odd windowsize
+window is right aligned inclusive of current position (row)</p>
+<dl class="field-list">
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;t&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample_windows_df</span> <span class="o">=</span> <span class="n">window_generation_for_tsfresh</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;t&quot;</span><span class="p">],</span> <span class="n">w</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sample_windows_df</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sample_windows_df</span><span class="p">[:</span><span class="mi">6</span><span class="p">]</span>
+<span class="go">    sample_id   order    t</span>
+<span class="go">            2   0      0.0</span>
+<span class="go">                1      1.0</span>
+<span class="go">                2      2.0</span>
+<span class="go">            3   0      1.0</span>
+<span class="go">                1      2.0</span>
+<span class="go">                2      3.0</span>
 </pre></div>
 </div>
 </dd>

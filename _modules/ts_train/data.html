@@ -160,6 +160,7 @@
 <span class="sd">   interpolate_series</span>
 <span class="sd">   series2matrix</span>
 <span class="sd">   create_sequences</span>
+<span class="sd">   window_generation_for_tsfresh</span>
 <span class="sd">   transfrom_all_data</span>
 <span class="sd">   make_features</span>
 <span class="sd">   reduce_mem_usage</span>
@@ -169,6 +170,7 @@
 <span class="sd">.. autofunction:: interpolate_series</span>
 <span class="sd">.. autofunction:: series2matrix</span>
 <span class="sd">.. autofunction:: create_sequences</span>
+<span class="sd">.. autofunction:: window_generation_for_tsfresh</span>
 <span class="sd">.. autofunction:: transfrom_all_data</span>
 <span class="sd">.. autofunction:: make_features</span>
 <span class="sd">.. autofunction:: reduce_mem_usage</span>
@@ -290,7 +292,52 @@
     
     <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span></div>
 
+   
+<div class="viewcode-block" id="window_generation_for_tsfresh"><a class="viewcode-back" href="../../modules.html#ts_train.data.window_generation_for_tsfresh">[docs]</a><span class="k">def</span> <span class="nf">window_generation_for_tsfresh</span><span class="p">(</span><span class="n">series</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="mi">21</span><span class="p">,</span> <span class="n">id_shift</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Window generation for tsfresh</span>
+<span class="sd">    </span>
+<span class="sd">    w = odd windowsize</span>
+<span class="sd">    window is right aligned inclusive of current position (row)</span>
+<span class="sd">    </span>
+<span class="sd">    :Example:</span>
+<span class="sd">        &gt;&gt;&gt; df = pd.DataFrame()</span>
+<span class="sd">        &gt;&gt;&gt; df[&quot;t&quot;] = np.arange(1, 200)</span>
+<span class="sd">        &gt;&gt;&gt; sample_windows_df = window_generation_for_tsfresh(df[&quot;t&quot;], w=5)</span>
+<span class="sd">        &gt;&gt;&gt; print(sample_windows_df.shape)</span>
+<span class="sd">        &gt;&gt;&gt; sample_windows_df[:6]</span>
+<span class="sd">            sample_id	order	 t</span>
+<span class="sd">                    2	0      0.0</span>
+<span class="sd">                        1      1.0</span>
+<span class="sd">                        2      2.0</span>
+<span class="sd">                    3	0      1.0</span>
+<span class="sd">                        1      2.0</span>
+<span class="sd">                        2      3.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">org_col</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;t+{(w//2)}&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="n">org_col</span><span class="p">:</span> <span class="n">series</span><span class="p">})</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">id_shift</span><span class="p">:</span>
+        <span class="n">id_shift</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">w</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        
+    <span class="c1"># left-shift</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">w</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;t+&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">((</span><span class="n">w</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">org_col</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+    <span class="c1"># right-shift</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">w</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;t+&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">w</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">org_col</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="n">i</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;sample_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">periods</span><span class="o">=</span><span class="n">id_shift</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;sample_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;sample_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">wide_to_long</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">stubnames</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;sample_id&quot;</span><span class="p">],</span> <span class="n">j</span><span class="o">=</span><span class="s2">&quot;order&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_index</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+   
+   
 <div class="viewcode-block" id="create_sequences"><a class="viewcode-back" href="../../modules.html#ts_train.data.create_sequences">[docs]</a><span class="k">def</span> <span class="nf">create_sequences</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">time_steps</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">skip_steps</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ignore_last</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generated training sequences for use in the model.</span>
