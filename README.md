@@ -2,6 +2,7 @@
 ![PyPI](https://img.shields.io/pypi/v/ts_train)
 ![Sphinx Build](https://github.com/minesh1291/ts-train/workflows/Sphinx%20Build/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/minesh1291/ts-train/badge.svg?branch=master)](https://coveralls.io/github/minesh1291/ts-train?branch=master)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/ts-train)
 <!-- ![Downloads](https://img.shields.io/pypi/dm/ts_train.svg?label=Pypi%20downloads) -->  
 # ts-train
 Time-Series data handling for Machine Learning Tasks
